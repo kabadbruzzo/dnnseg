@@ -1105,7 +1105,7 @@ class AcousticDatafile(object):
         self.len = feats.shape[0]
         self.duration = duration
 
-        self.ID = os.path.basename(path)[:-4]
+        self.ID = os.path.basename(path) #[:-4]
         self.dir = os.path.dirname(path)
         self.wav_path = path
 
@@ -1274,7 +1274,7 @@ class AcousticDatafile(object):
 
         out_start = []
         out_end = []
-        for x in parent_segments[['start', 'end']].values:
+        for x in parent_segments[['start', 'end']].as_matrix():
             s_p, e_p = x
             s = s_p
             e = s
@@ -1323,8 +1323,8 @@ class AcousticDatafile(object):
 
         out = []
 
-        parent_starts = parent_segs.start.values
-        parent_ends = parent_segs.end.values
+        parent_starts = parent_segs.start.as_matrix()
+        parent_ends = parent_segs.end.as_matrix()
 
         n_layers = len(segmentation_probs)
 
