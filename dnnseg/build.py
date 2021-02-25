@@ -65,7 +65,7 @@ if args.de2 is not None:
 
     for fileID in german_files:
         subject = fileID[10:13]
-        print(subject)
+        #print(subject)
         for i in reversed(range(1, 3)): ##subject folder could end in _01 or _02
             subject_folder = subject.replace("v", "VP ") + '_0' + str(i)
             #print(args.de2 + '/' + subject_folder)
