@@ -10,7 +10,7 @@ Intead, first run the following from the repository root:
 To reproduce Shain & Elsner (2019), you will first need the data from the [Zerospeech 2015 challenge](https://github.com/bootphon/Zerospeech2015).
 Once the data are in hand, you will need to run the following preprocessing script from the repository root:
 
-`python -m dnnseg.datasets.zerospeech.build -b <PATH-TO-BUCKEYE-ROOT> -x <PATH-TO-NCHLT-ROOT>`
+`python -m dnnseg.build <PATH-TO-METADATA> <PATH-TO-WORD-INFORMATION> -d <PATH-TO-DE2> -s <PATH-TO-SP1>`
 
 Once the data have been preprocessed, models can be trained by running:
 
