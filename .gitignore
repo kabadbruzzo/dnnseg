@@ -1,3 +1,5 @@
 data/
 german/
 *.pyc
+*.xml
+*.iml
