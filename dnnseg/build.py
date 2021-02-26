@@ -30,7 +30,8 @@ spanish_files = []
 with open(args.meta + "/german_files.txt", "r") as f:
     for l in f.readlines():
         german_files.append(l.strip()[:-4])
-#print(german_files[:5])
+print("----GERMAN FILES----")
+print(german_files[:5])
     
 with open(args.meta + "/spanish_files.txt", "r") as f:
     for l in f.readlines():
@@ -38,15 +39,23 @@ with open(args.meta + "/spanish_files.txt", "r") as f:
 
 
 german_vad = pd.read_csv(args.meta + "/german_vad.txt", sep=' ', header=None, names=['fileID', 'start', 'end'])
+german_vad.fileID = german_vad.fileID.astype("string").map(lambda x: str(x)[:-4])
 german_vad.start = german_vad.start.round(3)
 german_vad.end = german_vad.end.round(3)
+print("----GERMAN VAD FILES----")
+print(german_vad.dtypes)
+print(german_vad[:5])
 
 german_wrd = pd.read_csv(args.wrd + '/german.wrd', sep=' ', header=None, names=['fileID', 'start', 'end', 'label'])
+german_wrd.fileID = german_wrd.fileID.astype("string").map(lambda x: str(x)[:-4])
 german_wrd.start = german_wrd.start.round(3)
 german_wrd.end = german_wrd.end.round(3)
-
+print("----GERMAN WRD FILES----")
+print(german_wrd.dtypes)
+print(german_wrd[:5])
 
 spanish_vad = pd.read_csv(args.meta + "/spanish_vad.txt", sep=' ', header=None, names=['fileID', 'start', 'end'])
+spanish_vad.fileID = spanish_vad.fileID.astype("string").map(lambda x: str(x)[:-4])
 spanish_vad.start = spanish_vad.start.round(3)
 spanish_vad.end = spanish_vad.end.round(3)
 
