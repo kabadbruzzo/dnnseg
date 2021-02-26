@@ -81,7 +81,7 @@ if args.de2 is not None:
 
                 to_print = german_wrd[german_wrd.fileID == fileID]
                 to_print['speaker'] = subject
-                to_print.to_csv(args.outdir + '/german/%s.vad' % fileID, sep=' ', index=False)
+                to_print.to_csv(args.outdir + '/german/%s.wrd' % fileID, sep=' ', index=False)
 
                 break ##if 02 is found, search for 01 no longer necessary
 else:
