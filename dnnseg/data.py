@@ -102,13 +102,12 @@ def extract_segment_timestamps(
             timestamps = np.array([max_len])
 
     else:
-        raise ValueError('Smoothing algorithm %s not supported at this time' %algorithm)
+        raise ValueError('Smoothing algorithm %s not supported at this time' % algorithm)
 
     if return_plot:
         out = (timestamps, basis, response)
     else:
         out = timestamps
-
 
     return out
 
@@ -236,6 +235,7 @@ def extract_states_at_timestamps_batch(
 
     return out
 
+
 def split_seq_at_timestamps(
         timestamps,
         seq,
@@ -244,7 +244,6 @@ def split_seq_at_timestamps(
     ix = np.minimum(np.rint((timestamps * 1000) / offset) + 1, len(seq) - 1).astype('int')
 
     out = np.split()
-
 
 
 def binary_segments_to_intervals_inner(binary_segments, mask, src_segments=None, labels=None, offset=10):
@@ -355,14 +354,14 @@ def repad_acoustic_features(acoustic_features, new_length, padding='pre', value=
         new_feats = np.full(acoustic_features.shape[:-2] + (new_length,) + acoustic_features.shape[-1:], fill_value=value)
         old_length = acoustic_features.shape[-2]
         if padding == 'pre':
-            new_feats[:,-old_length:,:] = acoustic_features
+            new_feats[:, -old_length:, :] = acoustic_features
         else:
-            new_feats[:,:old_length,:] = acoustic_features
+            new_feats[:, :old_length, :] = acoustic_features
     else:
-        if padding=='pre':
-            new_feats = acoustic_features[:,-new_length:,:]
+        if padding == 'pre':
+            new_feats = acoustic_features[:, -new_length:, :]
         else:
-            new_feats = acoustic_features[:,:new_length,:]
+            new_feats = acoustic_features[:, :new_length, :]
 
     return new_feats
 
@@ -417,8 +416,8 @@ def segment_length_summary(segs, indent=0, offset=None):
 
 
 def score_segmentation(true, pred, tol=0.02):
-    true = np.array(true[['start','end']])
-    pred = np.array(pred[['start','end']])
+    true = np.array(true[['start', 'end']])
+    pred = np.array(pred[['start', 'end']])
 
     i = 0
     j = 0
@@ -489,8 +488,8 @@ def score_segmentation(true, pred, tol=0.02):
             s_hit = False
             e_hit = False
 
-            s_diff = math.fabs(s_true-s_pred)
-            e_diff = math.fabs(e_true-e_pred)
+            s_diff = math.fabs(s_true - s_pred)
+            e_diff = math.fabs(e_true - e_pred)
 
             if s_diff <= tol:
                 s_hit = True
@@ -595,11 +594,11 @@ class AcousticDataset(object):
     def __init__(
             self,
             dir_path,
-            sr = 16000,
-            offset = 10,
-            window_len = 25,
-            n_coef = 13,
-            order = 2,
+            sr=16000,
+            offset=10,
+            window_len=25,
+            n_coef=13,
+            order=2,
             clip_timesteps=None,
             verbose=True
     ):
@@ -625,7 +624,7 @@ class AcousticDataset(object):
                 file_name = wav_file.split('/')[-1]
                 if len(file_name) > 10:
                     file_name = file_name[:7] + '...'
-                out_str = '\rProcessing file "%s" %d/%d' %(file_name, i + 1, n)
+                out_str = '\rProcessing file "%s" %d/%d' % (file_name, i + 1, n)
                 out_str += ' ' * (40 - len(out_str))
                 if i > 0:
                     h = int(eta / 3600)
@@ -642,7 +641,6 @@ class AcousticDataset(object):
                     out_str += '|    ETA - %s     ' % time_str
                 sys.stderr.write(out_str)
 
-
             new_data = AcousticDatafile(
                 wav_file,
                 sr=sr,
@@ -654,7 +652,7 @@ class AcousticDataset(object):
             )
             self.data[new_data.ID] = new_data
             t1 = time.time()
-            times.append(t1-t0)
+            times.append(t1 - t0)
             mean_time = sum(times) / len(times)
             eta = (n - i + 1) * mean_time
 
@@ -693,12 +691,12 @@ class AcousticDataset(object):
                         new_series.append(1)
                     else:
                         new_series.append(0)
-                    to_add.append(feats[:, i:i+fold])
+                    to_add.append(feats[:, i:i + fold])
                 out += to_add
             else:
                 new_series.append(1)
                 out.append(feats)
-                
+
         new_series = np.array(new_series)
 
         return out, new_series
@@ -731,7 +729,7 @@ class AcousticDataset(object):
                 normalize=normalize,
                 center=center,
                 with_deltas=with_deltas,
-                resample = resample,
+                resample=resample,
             )
             if pad_seqs:
                 feats.append(new_feats)
@@ -748,7 +746,7 @@ class AcousticDataset(object):
                 for i, f in enumerate(feats):
                     feats[i] = repad_acoustic_features(feats[i], max_len, padding=padding)
                 for i, f in enumerate(mask):
-                    mask[i] = np.squeeze(repad_acoustic_features(mask[i][...,None], max_len, padding=padding), -1)
+                    mask[i] = np.squeeze(repad_acoustic_features(mask[i][..., None], max_len, padding=padding), -1)
 
             feats = np.concatenate(feats, axis=0)
             mask = np.concatenate(mask, axis=0)
@@ -772,7 +770,7 @@ class AcousticDataset(object):
             reverse=reverse,
             normalize=normalize,
             center=center,
-            resample = resample
+            resample=resample
         )
 
     def targets(
@@ -837,7 +835,7 @@ class AcousticDataset(object):
 
         return out
 
-    def file_indices(self, segment_type='vad'):
+    def file_indices(self, segment_type='wrd'):
         assert segment_type in ['vad', 'phn', 'wrd'], 'Only segment types "vad", "phn", and "wrd" are supported for file index extraction'
 
         n = 0
@@ -959,11 +957,11 @@ class AcousticDataset(object):
                 n_utt = len(F.rnd_segments)
 
             dfs = F.get_segment_tables_from_segmenter_states(
-                [s[i:i+n_utt] for s in segmentation_probs],
+                [s[i:i + n_utt] for s in segmentation_probs],
                 parent_segment_type=parent_segment_type,
-                states=[s[i:i+n_utt] for s in states],
+                states=[s[i:i + n_utt] for s in states],
                 discretize=discretize,
-                mask=mask[i:i+n_utt],
+                mask=mask[i:i + n_utt],
                 state_activation=state_activation,
                 algorithm=algorithm,
                 algorithm_params=algorithm_params,
@@ -1007,7 +1005,6 @@ class AcousticDataset(object):
 
         return global_score_dict, score_dict
 
-
     def dump_segmentations_to_textgrid(self, outdir=None, suffix='', segments=None):
         for f in self.fileIDs:
             if isinstance(segments, str):
@@ -1023,60 +1020,58 @@ class AcousticDataset(object):
 
     def summary(self, indent=0, summarize_components=False):
         out = ' ' * indent + 'DATASET SUMMARY:\n\n'
-        out += ' ' * (indent + 2) + 'Source directory: %s\n' %self.dir_path
+        out += ' ' * (indent + 2) + 'Source directory: %s\n' % self.dir_path
         duration = sum([self.data[f].duration for f in self.data])
         length = sum([len(self.data[f]) for f in self.data])
-        out += ' ' * (indent + 2) + 'Total duration (seconds): %.4f\n' %duration
-        out += ' ' * (indent + 2) + 'Total length (frames): %.4f\n' %length
-        out += ' ' * (indent + 2) + 'Sampling rate: %s\n' %self.sr
-        out += ' ' * (indent + 2) + 'Frame length: %sms\n' %self.window_len
-        out += ' ' * (indent + 2) + 'Step size: %sms\n' %self.offset
-        out += ' ' * (indent + 2) + 'Number of cepstral coefficients: %s\n' %self.n_coef
-        out += ' ' * (indent + 2) + 'Number of derivatives: %s\n' %self.order
+        out += ' ' * (indent + 2) + 'Total duration (seconds): %.4f\n' % duration
+        out += ' ' * (indent + 2) + 'Total length (frames): %.4f\n' % length
+        out += ' ' * (indent + 2) + 'Sampling rate: %s\n' % self.sr
+        out += ' ' * (indent + 2) + 'Frame length: %sms\n' % self.window_len
+        out += ' ' * (indent + 2) + 'Step size: %sms\n' % self.offset
+        out += ' ' * (indent + 2) + 'Number of cepstral coefficients: %s\n' % self.n_coef
+        out += ' ' * (indent + 2) + 'Number of derivatives: %s\n' % self.order
 
         if self.clip_timesteps:
-            out += ' ' * (indent + 2) + 'Frame clipping limit: %s\n' %self.clip_timesteps
+            out += ' ' * (indent + 2) + 'Frame clipping limit: %s\n' % self.clip_timesteps
 
         out += '\n'
         vad_segments = self.segments('vad')
         out += ' ' * (indent + 2) + 'Number of VAD segments: %s\n' % len(vad_segments)
-        out += segment_length_summary(vad_segments, indent=indent+2, offset=self.offset)
+        out += segment_length_summary(vad_segments, indent=indent + 2, offset=self.offset)
 
         out += '\n'
         phn_segments = self.segments('phn')
         out += ' ' * (indent + 2) + 'Number of phone segments: %s\n' % len(phn_segments)
         out += ' ' * (indent + 2) + 'Number of phone types: %s\n' % len(phn_segments.label.unique())
-        out += segment_length_summary(phn_segments, indent=indent+2, offset=self.offset)
+        out += segment_length_summary(phn_segments, indent=indent + 2, offset=self.offset)
 
         out += '\n'
         wrd_segments = self.segments('wrd')
         out += ' ' * (indent + 2) + 'Number of word segments: %s\n' % len(wrd_segments)
         out += ' ' * (indent + 2) + 'Number of word types: %s\n' % len(wrd_segments.label.unique())
-        out += segment_length_summary(wrd_segments, indent=indent+2, offset=self.offset)
+        out += segment_length_summary(wrd_segments, indent=indent + 2, offset=self.offset)
 
         if summarize_components:
             out += '\n' + ' ' * (indent + 2) + 'COMPONENT DATA FILE SUMMARIES:\n\n'
             for f in self.data:
-                out += self.data[f].summary(indent=indent+4, report_metadata=False)
+                out += self.data[f].summary(indent=indent + 4, report_metadata=False)
                 out += '\n'
 
         return out
-
-
 
 
 class AcousticDatafile(object):
     def __init__(
             self,
             path,
-            sr = 16000,
-            offset = 10,
-            window_len = 25,
-            n_coef = 13,
-            order = 2,
+            sr=16000,
+            offset=10,
+            window_len=25,
+            n_coef=13,
+            order=2,
             clip_timesteps=None,
     ):
-        assert path.endswith('.wav') or path.endswith('.WAV'), 'Input file "%s" was not .wav.' %path
+        assert path.endswith('.wav') or path.endswith('.WAV'), 'Input file "%s" was not .wav.' % path
         assert sr % 1000 == 0, 'Must use a sampling rate that is a multiple of 1000'
 
         self.sr = sr
@@ -1105,7 +1100,7 @@ class AcousticDatafile(object):
         self.len = feats.shape[0]
         self.duration = duration
 
-        self.ID = os.path.basename(path) #[:-4]
+        self.ID = os.path.basename(path)[:-4]
         self.dir = os.path.dirname(path)
         self.wav_path = path
 
@@ -1178,7 +1173,7 @@ class AcousticDatafile(object):
     def __len__(self):
         return self.len
 
-    def segments(self, segment_type='vad'):
+    def segments(self, segment_type='wrd'):
         if segment_type == 'vad':
             return self.vad_segments
         if segment_type == 'wrd':
@@ -1210,7 +1205,7 @@ class AcousticDatafile(object):
             elif segments == 'rnd':
                 segments_arr = self.rnd_segments
             else:
-                raise ValueError('Segment type "%s" not recognized.' %segments)
+                raise ValueError('Segment type "%s" not recognized.' % segments)
         else:
             segments_arr = segments
 
@@ -1234,7 +1229,7 @@ class AcousticDatafile(object):
                 new_feats = scipy.signal.resample(new_feats, resample, axis=0)
 
             if not with_deltas:
-                new_feats = new_feats[:,:self.n_coef]
+                new_feats = new_feats[:, :self.n_coef]
 
             if normalize:
                 maximum = new_feats.max()
@@ -1384,7 +1379,7 @@ class AcousticDatafile(object):
             else:
                 df['label'] = 0
                 for j in range(labels.shape[1]):
-                    df['d%s' %j] = labels[:,j]
+                    df['d%s' % j] = labels[:, j]
 
             df = pd.DataFrame(df)
 
@@ -1485,9 +1480,9 @@ class AcousticDatafile(object):
             f.write('        intervals: size = %d\n' % len(segments))
 
             row_str = '        intervals [%d]:\n' + \
-                '            xmin = %.3f\n' + \
-                '            xmax = %.3f\n' + \
-                '            text = "%s"\n\n'
+                      '            xmin = %.3f\n' + \
+                      '            xmax = %.3f\n' + \
+                      '            text = "%s"\n\n'
 
             if 'label' in segments.columns:
                 for i, r in segments[['start', 'end', 'label']].iterrows():
@@ -1521,48 +1516,43 @@ class AcousticDatafile(object):
 
         return score_dict
 
-
     def summary(self, indent=0, report_metadata=True):
-        out = ' ' * indent + 'DATA FILE SUMMARY: %s\n\n' %self.ID
-        out += ' ' * (indent + 2) + 'Source location: %s\n' %self.wav_path
-        out += ' ' * (indent + 2) + 'Duration (seconds): %.4f\n' %(self.duration)
-        out += ' ' * (indent + 2) + 'Length (frames): %.4f\n' %len(self)
+        out = ' ' * indent + 'DATA FILE SUMMARY: %s\n\n' % self.ID
+        out += ' ' * (indent + 2) + 'Source location: %s\n' % self.wav_path
+        out += ' ' * (indent + 2) + 'Duration (seconds): %.4f\n' % (self.duration)
+        out += ' ' * (indent + 2) + 'Length (frames): %.4f\n' % len(self)
 
         if report_metadata:
-            out += ' ' * (indent + 2) + 'Sampling rate: %s\n' %self.sr
-            out += ' ' * (indent + 2) + 'Frame length: %sms\n' %self.window_len
-            out += ' ' * (indent + 2) + 'Step size: %sms\n' %self.offset
-            out += ' ' * (indent + 2) + 'Number of cepstral coefficients: %s\n' %self.n_coef
-            out += ' ' * (indent + 2) + 'Number of derivatives: %s\n' %self.order
+            out += ' ' * (indent + 2) + 'Sampling rate: %s\n' % self.sr
+            out += ' ' * (indent + 2) + 'Frame length: %sms\n' % self.window_len
+            out += ' ' * (indent + 2) + 'Step size: %sms\n' % self.offset
+            out += ' ' * (indent + 2) + 'Number of cepstral coefficients: %s\n' % self.n_coef
+            out += ' ' * (indent + 2) + 'Number of derivatives: %s\n' % self.order
 
             if self.clip_timesteps:
-                out += ' ' * (indent + 2) + 'Frame clipping limit: %s\n' %self.clip_timesteps
+                out += ' ' * (indent + 2) + 'Frame clipping limit: %s\n' % self.clip_timesteps
 
         if self.vad_path:
-            out += '\n' + ' ' * (indent + 2) + 'VAD segmentation file location: %s\n' %self.vad_path
+            out += '\n' + ' ' * (indent + 2) + 'VAD segmentation file location: %s\n' % self.vad_path
         else:
             out += '\n' + ' ' * (indent + 2) + 'No VAD segmentation file provided.\n'
         out += ' ' * (indent + 2) + 'Number of VAD segments: %s\n' % len(self.vad_segments)
-        out += segment_length_summary(self.vad_segments, indent=indent+2, offset=self.offset)
+        out += segment_length_summary(self.vad_segments, indent=indent + 2, offset=self.offset)
 
         if self.phn_path:
-            out += '\n' + ' ' * (indent + 2) + 'Phone segmentation file location: %s\n' %self.phn_path
+            out += '\n' + ' ' * (indent + 2) + 'Phone segmentation file location: %s\n' % self.phn_path
         else:
             out += '\n' + ' ' * (indent + 2) + 'No phone segmentation file provided.\n'
         out += ' ' * (indent + 2) + 'Number of phone segments: %s\n' % len(self.phn_segments)
         out += ' ' * (indent + 2) + 'Number of phone types: %s\n' % len(self.phn_segments.label.unique())
-        out += segment_length_summary(self.phn_segments, indent=indent+2, offset=self.offset)
+        out += segment_length_summary(self.phn_segments, indent=indent + 2, offset=self.offset)
 
         if self.wrd_path:
-            out += '\n' + ' ' * (indent + 2) + 'Word segmentation file location: %s\n' %self.wrd_path
+            out += '\n' + ' ' * (indent + 2) + 'Word segmentation file location: %s\n' % self.wrd_path
         else:
             out += '\n' + ' ' * (indent + 2) + 'No word segmentation file provided.\n'
         out += ' ' * (indent + 2) + 'Number of word segments: %s\n' % len(self.wrd_segments)
         out += ' ' * (indent + 2) + 'Number of word types: %s\n' % len(self.wrd_segments.label.unique())
-        out += segment_length_summary(self.wrd_segments, indent=indent+2, offset=self.offset)
+        out += segment_length_summary(self.wrd_segments, indent=indent + 2, offset=self.offset)
 
         return out
-
-
-
-
