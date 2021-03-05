@@ -1,33 +1,31 @@
 # DNNSeg
 
 DNNSeg is a repository for unsupervised speech segmentation and classification using deep neural frameworks.
-You are currently in the `NAACL19` branch, which is exclusively used for reproducing results from Shain & Elsner (2019).
-Do not use this branch to train new models on your own data.
-Intead, first run the following from the repository root:
+You are currently in the `dnnseg_german` branch, where I'm working on my Masters thesis. 
+This branch was forked from [Cory Shain's Repository](https://github.com/coryshain/dnnseg/tree/NAACL19), where the results of Shain & Elsner (2019) can be reproduced.
 
-`git checkout -b master`
-
-To reproduce Shain & Elsner (2019), you will first need the data from the [Zerospeech 2015 challenge](https://github.com/bootphon/Zerospeech2015).
-Once the data are in hand, you will need to run the following preprocessing script from the repository root:
-
+To run this script, start with
 `python -m dnnseg.build <PATH-TO-METADATA> <PATH-TO-WORD-INFORMATION> -d <PATH-TO-DE2> -s <PATH-TO-SP1>`
 
 Once the data have been preprocessed, models can be trained by running:
 
 `python -m dnnseg.bin.train <PATH-TO-INI-FILE>`
 
-The eight models of Shain & Elsner (2019) are defined in the following files at the repository root:
+The models are defined in the following files at the repository root:
 
-  - `english_zerospeech_classify.ini`
-  - `english_zerospeech_classify_nospeaker.ini`
-  - `english_zerospeech_classify_nobsn.ini`
-  - `english_zerospeech_classify_nospeaker_nobsn.ini`
-  - `xitsonga_zerospeech_classify.ini`
-  - `xitsonga_zerospeech_classify_nospeaker.ini`
-  - `xitsonga_zerospeech_classify_nobsn.ini`
-  - `xitsonga_zerospeech_classify_nospeaker_nobsn.ini`
+  - `german_classify.ini`
+  - `german_classify_nospeaker.ini`
+  - `german_classify_nobsn.ini`
+  - `german_classify_nospeaker_nobsn.ini`
 
-Questions and feedback can be directed to Cory Shain ([shain.3@osu.edu](shain.3@osu.edu)).
+# Metadata
+
+Metadata: folder containing
+- `german_files.txt` : a list of all .wav files to be read. No header necessary.
+- `german_vad.txt` : a list of .wav files, audio start point in ms, and audio end point in ms. No headers necessary
+
+Word information: folder containing
+- `german.vad` : a list of .wav files, audio start point in ms, audio end point in ms, and label. No headers necessary.
 
 ## References
 
