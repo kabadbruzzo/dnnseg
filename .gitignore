@@ -1,5 +1,6 @@
 data/
 german/
+.ipynb_checkpoints/
 *.pyc
 *.xml
 *.iml
