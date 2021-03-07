@@ -796,7 +796,7 @@ class AcousticDataset(object):
         )
         return targets, mask
 
-    def segments(self, segment_type='vad'):
+    def segments(self, segment_type='wrd'):
         return pd.concat([self.data[f].segments(segment_type=segment_type) for f in self.fileIDs], axis=0)
 
     def ix2label(self, segment_type='wrd'):
