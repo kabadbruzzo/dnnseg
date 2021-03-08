@@ -10,7 +10,7 @@ import tensorflow as tf
 from sklearn.metrics import homogeneity_completeness_v_measure, adjusted_mutual_info_score, fowlkes_mallows_score
 
 from .backend import *
-from .data import get_random_permutation, get_padded_lags, extract_segment_timestamps_batch, extract_states_at_timestamps_batch
+from .data import get_random_permutation, get_padded_lags, extract_segment_timestamps_batch, extract_states_at_timestamps_batch, AcousticDataset
 from .kwargs import UNSUPERVISED_WORD_CLASSIFIER_INITIALIZATION_KWARGS, UNSUPERVISED_WORD_CLASSIFIER_MLE_INITIALIZATION_KWARGS
 from .util import f_measure, pretty_print_seconds
 from .plot import plot_acoustic_features, plot_label_histogram, plot_label_heatmap, plot_binary_unit_heatmap
@@ -54,7 +54,10 @@ class AcousticEncoderDecoder(object):
         return object.__new__(cls)
 
     def __init__(self, k, train_data, **kwargs):
+        """
 
+        :type train_data: AcousticDataset
+        """
         self.k = k
         for kwarg in AcousticEncoderDecoder._INITIALIZATION_KWARGS:
             setattr(self, kwarg.key, kwargs.pop(kwarg.key, kwarg.default_value))
@@ -2162,6 +2165,12 @@ class AcousticEncoderDecoder(object):
             n_plot=10,
             verbose=True
     ):
+        """
+
+        :type train_data: AcousticDataset
+        :type cv_data: AcousticDataset
+
+        """
         if self.global_step.eval(session=self.sess) == 0:
             self.save()
 

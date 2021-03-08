@@ -755,7 +755,7 @@ class AcousticDataset(object):
 
     def inputs(
             self,
-            segments='vad',
+            segments='wrd',
             max_len=None,
             padding='pre',
             reverse=False,
@@ -775,7 +775,7 @@ class AcousticDataset(object):
 
     def targets(
             self,
-            segments='vad',
+            segments='wrd',
             padding='post',
             max_len=None,
             reverse=True,
