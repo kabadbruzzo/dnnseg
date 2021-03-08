@@ -85,11 +85,13 @@ if args.de2 is not None:
                 #print("in theory I copied something")
 
                 to_print = german_vad[german_vad.fileID == fileID]
-                to_print['speaker'] = subject
+                #to_print['speaker'] = subject
+                to_print.insert(3,'speaker',subject)
                 to_print.to_csv(args.outdir + '/german/%s.vad' % fileID, sep=' ', index=False)
 
                 to_print = german_wrd[german_wrd.fileID == fileID]
-                to_print['speaker'] = subject
+                #to_print['speaker'] = subject
+                to_print.insert(3, 'speaker', subject)
                 to_print.to_csv(args.outdir + '/german/%s.wrd' % fileID, sep=' ', index=False)
 
                 break ##if 02 is found, search for 01 no longer necessary
