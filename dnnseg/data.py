@@ -703,7 +703,7 @@ class AcousticDataset(object):
 
     def segment_and_stack(
             self,
-            segments='vad',
+            segments='wrd',
             max_len=None,
             padding='pre',
             reverse=False,
@@ -712,11 +712,22 @@ class AcousticDataset(object):
             with_deltas=True,
             resample=None
     ):
+        print("\n ####### using method .segment_and_stack from AcousticDataset ###### \n")
+
         feats = []
         mask = []
         pad_seqs = padding not in ['None', None]
 
         for f in self.fileIDs:
+            if self.data[f].ID == "de2_e_b01_v0102301011111":
+                print("ARGUMENTS PASSED TO METHOD SEGMENT_AND_STACK IN ACOUSTICDATASET \n")
+                print(f"segments = {segments} \n")
+                print(f"max_len = {max_len} \n")
+                print(f"reverse = {reverse} \n")
+                print(f"normalize = {normalize} \n")
+                print(f"center = {center} \n")
+                print(f"with_deltas = {with_deltas} \n")
+                print(f"resample = {resample} \n")
             if isinstance(segments, dict):
                 segments_cur = segments[f]
             else:
@@ -763,6 +774,7 @@ class AcousticDataset(object):
             center=False,
             resample=None
     ):
+        print("\n ####### using method .inputs from AcousticDataset ###### \n")
         return self.segment_and_stack(
             segments=segments,
             max_len=max_len,
@@ -784,6 +796,7 @@ class AcousticDataset(object):
             with_deltas=False,
             resample=None
     ):
+        print("using method .targets from AcousticDataset")
         targets, mask = self.segment_and_stack(
             segments=segments,
             max_len=max_len,
@@ -852,7 +865,7 @@ class AcousticDataset(object):
 
         return file_indices
 
-    def shuffle(self, inputs, segment_type='vad', reshuffle=False):
+    def shuffle(self, inputs, segment_type='wrd', reshuffle=False):
         if not isinstance(inputs, list):
             inputs = [inputs]
         out = []
@@ -926,7 +939,7 @@ class AcousticDataset(object):
     def get_segment_tables_from_segmenter_states(
             self,
             segmentation_probs,
-            parent_segment_type='vad',
+            parent_segment_type='wrd',
             states=None,
             discretize=True,
             state_activation='tanh',
@@ -1185,7 +1198,7 @@ class AcousticDatafile(object):
 
     def segment_and_stack(
             self,
-            segments='vad',
+            segments='wrd',
             max_len=None,
             padding='pre',
             reverse=False,
@@ -1194,6 +1207,17 @@ class AcousticDatafile(object):
             with_deltas=True,
             resample=None
     ):
+        if self.ID == "de2_e_b01_v0102301011111":
+            print("ARGUMENTS PASSED TO METHOD SEGMENT_AND_STACK IN ACOUSTICDATAFILE: \n")
+            print(f"segments = {segments} \n")
+            print(f"max_len = {max_len} \n")
+            print(f"padding = {padding} \n")
+            print(f"reverse = {reverse} \n")
+            print(f"normalize = {normalize} \n")
+            print(f"center = {center} \n")
+            print(f"with_deltas = {with_deltas} \n")
+            print(f"resample = {resample} \n")
+        #print("\n ####### using method .segment_and_stack from AcousticDatafile ###### \n")
         assert not (normalize and center), 'normalize and center cannot both be true, since normalize constrains to the interval [0,1] and center recenters at 0.'
         if isinstance(segments, str):
             if segments == 'vad':
@@ -1209,12 +1233,16 @@ class AcousticDatafile(object):
         else:
             segments_arr = segments
 
+        #print(f"Step 1: segments_arr is {segments_arr}")
+
         pad_seqs = padding not in ['None', None]
 
         bounds = np.array(
             np.rint((segments_arr[['start', 'end']] * 1000 / self.offset)),
             dtype=np.int32
         )
+
+        #print(f"Step 2: boudnds is {bounds}")
         feats_split = []
         mask_split = []
         for i in range(len(bounds)):
@@ -1257,7 +1285,7 @@ class AcousticDatafile(object):
 
         return feats, mask
 
-    def generate_random_segmentation(self, mean_frames_per_segment, parent_segment_type='vad'):
+    def generate_random_segmentation(self, mean_frames_per_segment, parent_segment_type='wrd'):
         if parent_segment_type == 'vad':
             parent_segments = self.vad_segments
         elif parent_segment_type == 'wrd':
@@ -1295,7 +1323,7 @@ class AcousticDatafile(object):
     def get_segment_tables_from_segmenter_states(
             self,
             segmentation_probs,
-            parent_segment_type='vad',
+            parent_segment_type='wrd',
             states=None,
             discretize=True,
             state_activation='tanh',

@@ -1605,6 +1605,7 @@ class AcousticEncoderDecoder(object):
             plot=True,
             verbose=True
     ):
+        print("using method .evaluate_classifier from AcousticEncoderDecoder")
         summary = ''
         eval_dict = {}
         binary = self.binary_classifier
@@ -1679,6 +1680,12 @@ class AcousticEncoderDecoder(object):
 
                         if self.speaker_emb_dim:
                             fd_minibatch[self.speaker] = speaker[indices]
+
+                        print("minibatch is:", fd_minibatch)
+                        print("\n")
+                        print("labels post: ", self.labels_post)
+                        print("\n")
+                        print("to run: ", to_run)
 
                         out = self.sess.run(
                             to_run,
@@ -1798,6 +1805,7 @@ class AcousticEncoderDecoder(object):
             plot=True,
             verbose=True
     ):
+        print("using method .classify utterances from AcousticEncoderDecoder")
         eval_dict = {}
         binary = self.binary_classifier
         if segtype is None:
@@ -1869,6 +1877,15 @@ class AcousticEncoderDecoder(object):
             plot=True,
             verbose=True
     ):
+        """
+
+        :type cv_data: AcousticDataset
+        :param X_cv: AcousticDataset.features()[0]
+        :param X_mask_cv: AcousticDataset.features()[1]
+        :param y_cv: AcousticDataset.targets()[0]
+        :param y_mask_cv: AcousticDataset.targets()[1]
+        """
+        print("using method .run_evaluation from AcousticEncoderDecoder")
         eval_dict = {}
 
         binary = self.binary_classifier
@@ -2168,7 +2185,9 @@ class AcousticEncoderDecoder(object):
         """
 
         :type train_data: AcousticDataset
-        :type cv_data: AcousticDataset
+        :type cv_data: AcousticDataset or None
+        :type ix2label: list
+        :param ix2label: list of unique labels
 
         """
         if self.global_step.eval(session=self.sess) == 0:
@@ -2183,9 +2202,11 @@ class AcousticEncoderDecoder(object):
         t0 = time.time()
 
         if self.task == 'streaming_autoencoder':
+            print("X comes from AcousticDataset.features()")
             X, new_series = train_data.features(fold=n_fold, filter=None)
             n_train = len(X)
         else:
+            print("X, X_mask comes from AcousticDataset.inputs() and y, y_mask from .targets()")
             X, X_mask = train_data.inputs(
                 segments=self.segtype,
                 padding=self.input_padding,
@@ -2207,8 +2228,10 @@ class AcousticEncoderDecoder(object):
 
         if cv_data is None:
             if self.task == 'streaming_autoencoder':
+                print("X and X_cv are identical")
                 X_cv = X
             else:
+                print("X_cv = X, X_mask_cv = X_mask; y_cv = y, y_mask_cv = y_mask")
                 X_cv = X
                 X_mask_cv = X_mask
                 y_cv = y
@@ -2218,8 +2241,10 @@ class AcousticEncoderDecoder(object):
                 self.plot_ix = np.random.choice(np.arange(len(X)), size=n_plot)
         else:
             if self.task == 'streaming_autoencoder':
+                print("X_cv comes from AcousticDataset.features()")
                 X_cv = cv_data.features()
             else:
+                print("X_cv, X_mask_cv comes from AcousticDataset.inputs() and y_cv, y_mask_cv from .targets")
                 X_cv, X_mask_cv = cv_data.inputs(
                     segments=self.segtype,
                     padding=self.input_padding,
@@ -2247,6 +2272,7 @@ class AcousticEncoderDecoder(object):
         sys.stderr.flush()
 
         if self.residual_decoder:
+            print(f"residual decoder value is {self.residual_decoder}")
             mean_axes = (0, 1)
             y_means = y.mean(axis=mean_axes, keepdims=True) * y_mask[..., None]
             y_means_cv = y_cv.mean(axis=mean_axes, keepdims=True) * y_mask_cv[..., None]
@@ -2291,13 +2317,18 @@ class AcousticEncoderDecoder(object):
                 if self.task == 'streaming_autoencoder':
                     eval_dict = {}
                 else:
+                    print(f"X_cv has the shape {X_cv.shape} \n",
+                          f"X_mask_cv has the shape {X_mask_cv.shape} \n",
+                          f"y_cv has the shape {y_cv.shape} \n",
+                          f"y_mask_cv has the shape {y_mask_cv.shape}")
+
                     eval_dict = self.run_evaluation(
                         cv_data if cv_data is not None else train_data,
-                        X_cv=X_cv,
-                        X_mask_cv=X_mask_cv,
-                        y_cv=y_cv,
-                        y_mask_cv=y_mask_cv,
-                        ix2label=ix2label,
+                        X_cv=X_cv, # from AcousticDataset.inputs()[0]
+                        X_mask_cv=X_mask_cv, # from AcousticDataset.inputs()[1]
+                        y_cv=y_cv, # from AcousticDataset.targets()[0]
+                        y_mask_cv=y_mask_cv, # from AcousticDataset.targets()[1]
+                        ix2label=ix2label, # list of unique labels
                         y_means_cv=None if y_means_cv is None else y_means_cv,
                         segtype=self.segtype,
                         plot=True,
@@ -2472,11 +2503,11 @@ class AcousticEncoderDecoder(object):
                             else:
                                 eval_dict = self.run_evaluation(
                                     cv_data if cv_data is not None else train_data,
-                                    X_cv=X_cv,
-                                    X_mask_cv=X_mask_cv,
-                                    y_cv=y_cv,
-                                    y_mask_cv=y_mask_cv,
-                                    ix2label=ix2label,
+                                    X_cv=X_cv, #from AcousticDataset.features()[0] or AcousticDataset.inputs()
+                                    X_mask_cv=X_mask_cv, #from AcousticDataset.features()[1]
+                                    y_cv=y_cv, #from AcousticDataset.targets()[0]
+                                    y_mask_cv=y_mask_cv, #from AcousticDataset.targets()[1]
+                                    ix2label=ix2label, #argument, list of unique labels
                                     y_means_cv=None if y_means_cv is None else y_means_cv,
                                     segtype=self.segtype,
                                     plot=True,
