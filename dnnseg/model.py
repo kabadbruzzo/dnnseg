@@ -1657,6 +1657,10 @@ class AcousticEncoderDecoder(object):
                     labels_pred = []
                     to_run.append(self.labels_post)
 
+                    ## in build:
+                    ## from _initialize_objective (overridden by daughter class method): self.labels_post = self.labels
+                    ## from _augment_encondig: self.labels = binary2integer(tf.round(encoding), session=...)
+
                     if binary:
                         encoding = []
                         encoding_entropy = []
@@ -1681,11 +1685,22 @@ class AcousticEncoderDecoder(object):
                         if self.speaker_emb_dim:
                             fd_minibatch[self.speaker] = speaker[indices]
 
-                        print("minibatch is:", fd_minibatch)
+                        print(f"indices = {indices}")
                         print("\n")
-                        print("labels post: ", self.labels_post)
+                        print("minibatch is:")
                         print("\n")
-                        print("to run: ", to_run)
+                        print(f"{self.X} : X_cv[indices] (shape = {X_cv[indices].shape} )")
+                        print(f"{self.X_mask} : X_mask[indices] (shape =  {X_mask_cv[indices].shape})")
+                        print(f"{self.y} : y_cv[indices] (shape = {y_cv[indices].shape})")
+                        print(f"{self.y_mask} y_mask[indices] (shape = {y_mask_cv[indices].shape})")
+                        print("\n")
+
+                        print(f"""to run = [self.labels_post ({self.labels_post}),\n \
+                        self.encoding_post ({self.encoding_post}), \n \
+                        self.encoding_entropy ({self.encoding_entropy})]""")
+                        print("\n")
+
+                        print("Trying: self.sess.run(to_run, feed_dict = fd_minibatch)")
 
                         out = self.sess.run(
                             to_run,
