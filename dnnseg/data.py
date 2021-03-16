@@ -311,6 +311,7 @@ def binary_segments_to_intervals(binary_segments, mask, file_indices, src_segmen
 
 
 def pad_sequence(sequence, seq_shape=None, dtype='float32', reverse=False, padding='pre', value=0.):
+    #print("using pad_sequence function from data module")
     assert padding in ['pre', 'post'], 'Padding type "%s" not recognized' % padding
     if seq_shape is None:
         seq_shape = get_seq_shape(sequence)
@@ -1237,8 +1238,12 @@ class AcousticDatafile(object):
 
         pad_seqs = padding not in ['None', None]
 
+        # bounds = np.array(
+        #     np.rint((segments_arr[['start', 'end']] * 1000 / self.offset)),
+        #     dtype=np.int32
+        # )
         bounds = np.array(
-            np.rint((segments_arr[['start', 'end']] * 1000 / self.offset)),
+            np.rint((segments_arr[['start', 'end']] / self.offset)),
             dtype=np.int32
         )
 
