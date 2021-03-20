@@ -174,9 +174,9 @@ class AcousticEncoderDecoder(object):
                     self.segment_encoding_correspondence_regularizer = None
 
         self.label_map = None
-        if self.label_map_file:
+        if self.label_map_file: #meant: german_sampa_to_ipa.csv
             if os.path.exists(self.label_map_file):
-                self.label_map = pd.read_csv(self.label_map_file)
+                self.label_map = pd.read_csv(self.label_map_file, sep=";")
             else:
                 sys.stderr.write('Label map file %s does not exist. Label mapping will not be used.' %self.label_map_file)
 
