@@ -27,6 +27,11 @@ Metadata: folder containing
 Word information: folder containing
 - `german.vad` : a list of .wav files, audio start point in ms, audio end point in ms, and label. No headers necessary.
 
+# Tensorboard
+
+To visualize the model in tensorboard, run
+`tensorboard --logdir=D:\dnnseg_results\PATH-TO-DIR`
+
 ## References
 
 * Shain, Cory and Elsner, Micha (2019). Measuring the perceptual availability of phonological features during language
