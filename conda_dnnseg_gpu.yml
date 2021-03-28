@@ -1,4 +1,4 @@
-name: dnnseg
+name: dnnseg_gpu
 channels:
   - conda-forge
   - defaults
