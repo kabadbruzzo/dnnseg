@@ -19,6 +19,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 tf_config = tf.ConfigProto()
 tf_config.gpu_options.allow_growth = True
+#tf_config.gpu_options.per_process_gpu_memory_fraction = 0.4
 
 is_embedding_dimension = re.compile('d([0-9]+)')
 regularizer = re.compile('([^_]+)(_([0-9]*\.?[0-9]*))?')
