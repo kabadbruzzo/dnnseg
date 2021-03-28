@@ -2098,10 +2098,10 @@ class AcousticEncoderDecoder(object):
                         labels_string = np.vectorize(lambda x: ix2label[x])(labels_cv.astype('int'))
                         titles = labels_string[self.plot_ix]
                     else:
-                        titles = [None] * n_plot
+                        titles = [None] * n_plot ##n_plot is fixed, equals 10
 
                     to_run = [self.reconst]
-                    if seg:
+                    if seg: ##true if "hlmstm" in encoder_type
                         to_run += [self.segmentation_probs, self.encoder_hidden_states]
 
                     if self.pad_seqs:
