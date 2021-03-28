@@ -79,7 +79,7 @@ if args.de2 is not None:
             subject_folder = subject.replace("v", "VP ") + '_0' + str(i)
             #print(args.de2 + '/' + subject_folder)
             if os.path.exists(args.de2 + '/' + subject_folder):
-                in_path = args.de2 + '/' + subject_folder + '/' + fileID + '.wav'
+                in_path = args.de2 + '/' + subject_folder + '/' + fileID + '.WAV'
                 out_path = args.outdir + '/german/' + fileID + '.wav'
                 shutil.copy2(in_path, out_path)
                 #print("in theory I copied something")
@@ -108,7 +108,7 @@ if args.sp1 is not None:
         for i in reversed(range(1, 3)):  ##subject folder could end in _01 or _02
             subject_folder = subject.replace("v", "VP ") + '_0' + str(i)
             if os.path.exists(args.de2 + '/' + subject_folder):
-                in_path = args.de2 + '/' + subject_folder + '/' + fileID + '.wav'
+                in_path = args.de2 + '/' + subject_folder + '/' + fileID + '.WAV'
                 out_path = args.outdir + '/spanish/' + fileID + '.wav'
                 if args.bender:
                     sftp.put(in_path, out_path)
