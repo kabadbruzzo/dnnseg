@@ -14,7 +14,7 @@ if __name__ == '__main__':
     ''')
     argparser.add_argument('config', help='Path to configuration file.')
     argparser.add_argument('-p', '--partition', default='train', help='Name of partition from which to extract classifications (one of ["train", "dev", "test"]')
-    argparser.add_argument('-s', '--segtype', type=str, default='phn', help='Segment type to use for training (one of ["vad", "wrd", "phn"]')
+    argparser.add_argument('-s', '--segtype', type=str, default='wrd', help='Segment type to use for training (one of ["vad", "wrd", "phn"]')
     argparser.add_argument('-g', '--goldfeats', type=str, default=None, help='Path to gold features file to merge with classification table. If unspecified, no gold features columns will be added.')
     args = argparser.parse_args()
 
