@@ -997,8 +997,10 @@ class AcousticEncoderDecoder(object):
 
                 if self.log_graph:
                     self.writer = tf.summary.FileWriter(self.outdir + '/tensorboard/dnnseg', self.sess.graph)
+                    print("saving graph to tensorboard")
                 else:
                     self.writer = tf.summary.FileWriter(self.outdir + '/tensorboard/dnnseg')
+                    print("tensorboard events do not include graph")
                 self.summary_metrics = tf.summary.merge_all(key='metrics')
                 self.summary_segmentations = tf.summary.merge_all(key='segmentations')
 
@@ -1608,7 +1610,7 @@ class AcousticEncoderDecoder(object):
             plot=True,
             verbose=True
     ):
-        print("using method .evaluate_classifier from AcousticEncoderDecoder")
+        #print("using method .evaluate_classifier from AcousticEncoderDecoder")
         summary = ''
         eval_dict = {}
         binary = self.binary_classifier
@@ -1688,22 +1690,22 @@ class AcousticEncoderDecoder(object):
                         if self.speaker_emb_dim:
                             fd_minibatch[self.speaker] = speaker[indices]
 
-                        print(f"indices = {indices}")
-                        print("\n")
-                        print("minibatch is:")
-                        print("\n")
-                        print(f"{self.X} : X_cv[indices] (shape = {X_cv[indices].shape} )")
-                        print(f"{self.X_mask} : X_mask[indices] (shape =  {X_mask_cv[indices].shape})")
-                        print(f"{self.y} : y_cv[indices] (shape = {y_cv[indices].shape})")
-                        print(f"{self.y_mask} y_mask[indices] (shape = {y_mask_cv[indices].shape})")
-                        print("\n")
-
-                        print(f"""to run = [self.labels_post ({self.labels_post}),\n \
-                        self.encoding_post ({self.encoding_post}), \n \
-                        self.encoding_entropy ({self.encoding_entropy})]""")
-                        print("\n")
-
-                        print("Trying: self.sess.run(to_run, feed_dict = fd_minibatch)")
+                        # print(f"indices = {indices}")
+                        # print("\n")
+                        # print("minibatch is:")
+                        # print("\n")
+                        # print(f"{self.X} : X_cv[indices] (shape = {X_cv[indices].shape} )")
+                        # print(f"{self.X_mask} : X_mask[indices] (shape =  {X_mask_cv[indices].shape})")
+                        # print(f"{self.y} : y_cv[indices] (shape = {y_cv[indices].shape})")
+                        # print(f"{self.y_mask} y_mask[indices] (shape = {y_mask_cv[indices].shape})")
+                        # print("\n")
+                        #
+                        # print(f"""to run = [self.labels_post ({self.labels_post}),\n \
+                        # self.encoding_post ({self.encoding_post}), \n \
+                        # self.encoding_entropy ({self.encoding_entropy})]""")
+                        # print("\n")
+                        #
+                        # print("Trying: self.sess.run(to_run, feed_dict = fd_minibatch)")
 
                         out = self.sess.run(
                             to_run,
@@ -2220,11 +2222,11 @@ class AcousticEncoderDecoder(object):
         t0 = time.time()
 
         if self.task == 'streaming_autoencoder':
-            print("X comes from AcousticDataset.features()")
+            #print("X comes from AcousticDataset.features()")
             X, new_series = train_data.features(fold=n_fold, filter=None)
             n_train = len(X)
         else:
-            print("X, X_mask comes from AcousticDataset.inputs() and y, y_mask from .targets()")
+            #print("X, X_mask comes from AcousticDataset.inputs() and y, y_mask from .targets()")
             X, X_mask = train_data.inputs(
                 segments=self.segtype,
                 padding=self.input_padding,
@@ -2246,10 +2248,10 @@ class AcousticEncoderDecoder(object):
 
         if cv_data is None:
             if self.task == 'streaming_autoencoder':
-                print("X and X_cv are identical")
+                #print("X and X_cv are identical")
                 X_cv = X
             else:
-                print("X_cv = X, X_mask_cv = X_mask; y_cv = y, y_mask_cv = y_mask")
+                #print("X_cv = X, X_mask_cv = X_mask; y_cv = y, y_mask_cv = y_mask")
                 X_cv = X
                 X_mask_cv = X_mask
                 y_cv = y
@@ -2259,10 +2261,10 @@ class AcousticEncoderDecoder(object):
                 self.plot_ix = np.random.choice(np.arange(len(X)), size=n_plot)
         else:
             if self.task == 'streaming_autoencoder':
-                print("X_cv comes from AcousticDataset.features()")
+                #print("X_cv comes from AcousticDataset.features()")
                 X_cv = cv_data.features()
             else:
-                print("X_cv, X_mask_cv comes from AcousticDataset.inputs() and y_cv, y_mask_cv from .targets")
+                #print("X_cv, X_mask_cv comes from AcousticDataset.inputs() and y_cv, y_mask_cv from .targets")
                 X_cv, X_mask_cv = cv_data.inputs(
                     segments=self.segtype,
                     padding=self.input_padding,
@@ -2290,7 +2292,7 @@ class AcousticEncoderDecoder(object):
         sys.stderr.flush()
 
         if self.residual_decoder:
-            print(f"residual decoder value is {self.residual_decoder}")
+            #print(f"residual decoder value is {self.residual_decoder}")
             mean_axes = (0, 1)
             y_means = y.mean(axis=mean_axes, keepdims=True) * y_mask[..., None]
             y_means_cv = y_cv.mean(axis=mean_axes, keepdims=True) * y_mask_cv[..., None]
@@ -2335,10 +2337,10 @@ class AcousticEncoderDecoder(object):
                 if self.task == 'streaming_autoencoder':
                     eval_dict = {}
                 else:
-                    print(f"X_cv has the shape {X_cv.shape} \n",
-                          f"X_mask_cv has the shape {X_mask_cv.shape} \n",
-                          f"y_cv has the shape {y_cv.shape} \n",
-                          f"y_mask_cv has the shape {y_mask_cv.shape}")
+                    # print(f"X_cv has the shape {X_cv.shape} \n",
+                    #       f"X_mask_cv has the shape {X_mask_cv.shape} \n",
+                    #       f"y_cv has the shape {y_cv.shape} \n",
+                    #       f"y_mask_cv has the shape {y_mask_cv.shape}")
 
                     eval_dict = self.run_evaluation(
                         cv_data if cv_data is not None else train_data,
