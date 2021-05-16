@@ -32,6 +32,8 @@ Word information: folder containing
 To visualize the model in tensorboard, run
 `tensorboard --logdir=D:\dnnseg_results\PATH-TO-DIR`
 
+(!) `logdir` should be the path to the *directory* containing the tensorboard events file, NOT to the file itself.
+
 ## References
 
 * Shain, Cory and Elsner, Micha (2019). Measuring the perceptual availability of phonological features during language
