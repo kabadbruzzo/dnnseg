@@ -720,15 +720,15 @@ class AcousticDataset(object):
         pad_seqs = padding not in ['None', None]
 
         for f in self.fileIDs:
-            if self.data[f].ID == "de2_e_b01_v0102301011111":
-                print("ARGUMENTS PASSED TO METHOD SEGMENT_AND_STACK IN ACOUSTICDATASET \n")
-                print(f"segments = {segments} \n")
-                print(f"max_len = {max_len} \n")
-                print(f"reverse = {reverse} \n")
-                print(f"normalize = {normalize} \n")
-                print(f"center = {center} \n")
-                print(f"with_deltas = {with_deltas} \n")
-                print(f"resample = {resample} \n")
+            # if self.data[f].ID == "de2_e_b01_v0102301011111":
+            #     print("ARGUMENTS PASSED TO METHOD SEGMENT_AND_STACK IN ACOUSTICDATASET \n")
+            #     print(f"segments = {segments} \n")
+            #     print(f"max_len = {max_len} \n")
+            #     print(f"reverse = {reverse} \n")
+            #     print(f"normalize = {normalize} \n")
+            #     print(f"center = {center} \n")
+            #     print(f"with_deltas = {with_deltas} \n")
+            #     print(f"resample = {resample} \n")
             if isinstance(segments, dict):
                 segments_cur = segments[f]
             else:
@@ -1208,16 +1208,16 @@ class AcousticDatafile(object):
             with_deltas=True,
             resample=None
     ):
-        if self.ID == "de2_e_b01_v0102301011111":
-            print("ARGUMENTS PASSED TO METHOD SEGMENT_AND_STACK IN ACOUSTICDATAFILE: \n")
-            print(f"segments = {segments} \n")
-            print(f"max_len = {max_len} \n")
-            print(f"padding = {padding} \n")
-            print(f"reverse = {reverse} \n")
-            print(f"normalize = {normalize} \n")
-            print(f"center = {center} \n")
-            print(f"with_deltas = {with_deltas} \n")
-            print(f"resample = {resample} \n")
+        # if self.ID == "de2_e_b01_v0102301011111":
+        #     print("ARGUMENTS PASSED TO METHOD SEGMENT_AND_STACK IN ACOUSTICDATAFILE: \n")
+        #     print(f"segments = {segments} \n")
+        #     print(f"max_len = {max_len} \n")
+        #     print(f"padding = {padding} \n")
+        #     print(f"reverse = {reverse} \n")
+        #     print(f"normalize = {normalize} \n")
+        #     print(f"center = {center} \n")
+        #     print(f"with_deltas = {with_deltas} \n")
+        #     print(f"resample = {resample} \n")
         #print("\n ####### using method .segment_and_stack from AcousticDatafile ###### \n")
         assert not (normalize and center), 'normalize and center cannot both be true, since normalize constrains to the interval [0,1] and center recenters at 0.'
         if isinstance(segments, str):
