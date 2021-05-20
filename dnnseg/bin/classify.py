@@ -4,6 +4,7 @@ import time
 import pickle
 import pandas as pd
 import argparse
+import numpy as np
 
 from dnnseg.config import Config
 from dnnseg.util import load_dnnseg
