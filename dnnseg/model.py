@@ -1878,7 +1878,7 @@ class AcousticEncoderDecoder(object):
                 sys.stderr.write('The system is in segmentation mode and does not perform utterance classification. Skipping classifier evaluation...\n')
             out_data = None
 
-        return out_data, eval_dict, summary
+        return out_data, eval_dict, summary, labels_pred
 
     def run_evaluation(
             self,

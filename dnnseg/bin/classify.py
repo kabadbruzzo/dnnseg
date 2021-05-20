@@ -10,7 +10,7 @@ from dnnseg.util import load_dnnseg
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser('''
-    Trains a DNN-Seg model from a config file.
+    Trains a DNN-Seg model from a config file. Outputs predicted bottle neck features.
     ''')
     argparser.add_argument('config', help='Path to configuration file.')
     argparser.add_argument('-p', '--partition', default='train', help='Name of partition from which to extract classifications (one of ["train", "dev", "test"]')
@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
     dnnseg_model = load_dnnseg(p.outdir)
 
-    segments, _, summary = dnnseg_model.classify_utterances(
+    segments, _, summary, labels_pred = dnnseg_model.classify_utterances(
         data,
         segtype=args.segtype,
         ix2label=data.ix2label(args.segtype)
@@ -61,8 +61,13 @@ if __name__ == '__main__':
     segments.to_csv(outfile, na_rep='nan', index=False)
 
     outfile = p.outdir + '/' + 'classification_scores_%s' % args.partition + '.txt'
+    final_preds = p.outdir + '/' + 'final_predictions_%s' %args.partition + '.txt'
+
     with open(outfile, 'w') as f:
         f.write(summary)
+
+    with open(final_preds, 'w') as f:
+        f.write(labels_pred)
 
 
 
