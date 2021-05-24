@@ -40,6 +40,10 @@ if __name__ == '__main__':
     with open(data_map[args.partition] + '/' + data_name, 'rb') as f:
         data = pickle.load(f)
 
+    print(type(data.labels(one_hot=False, segment_type='wrd')))
+    print(data.labels(one_hot=False, segment_type='wrd').shape)
+    print(data.labels(one_hot=False, segment_type='wrd'))
+
     dnnseg_model = load_dnnseg(p.outdir)
 
     segments, _, summary, labels_pred = dnnseg_model.classify_utterances(
