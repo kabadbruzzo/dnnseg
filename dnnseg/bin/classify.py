@@ -69,7 +69,7 @@ if __name__ == '__main__':
     outfile = p.outdir + '/' + 'final_predictions_%s' % args.partition + '.txt'
     np.savetxt(outfile, labels_pred, fmt='%0.10g', delimiter=",")
 
-    outfile = p.outdir + '/' + 'labels%s' % args.partition + '.txt'
+    outfile = p.outdir + '/' + 'labels%s' % args.partition + '.csv'
     labels_true = pd.DataFrame(data.labels(one_hot=False, segment_type='wrd'))
     labels_true.to_csv(outfile)
     #np.savetxt(outfile, data.labels, fmt='%0.10g', delimiter=",")
