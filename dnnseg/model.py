@@ -236,8 +236,8 @@ class AcousticEncoderDecoder(object):
 
         self._initialize_inputs()
         if self.task != 'streaming_autoencoder':
-            self.encoder = self._initialize_encoder(self.X)
-            self.encoding = self._initialize_classifier(self.encoder)
+            self.encoder = self._initialize_encoder(self.X) ##put input layer (X) into first encoder layer(s)
+            self.encoding = self._initialize_classifier(self.encoder) ##put input + first layer into 8-bit-representations
             self.decoder_in, self.extra_dims = self._augment_encoding(self.encoding, encoder=self.encoder)
             self.decoder = self._initialize_decoder(self.decoder_in, self.n_timesteps_output)
             self._initialize_output_model()
@@ -1757,6 +1757,8 @@ class AcousticEncoderDecoder(object):
                                 )
 
                     h, c, v = homogeneity_completeness_v_measure(labels_cv, labels_pred)
+                    print('labels_cv %s' % labels_cv[0:5])
+                    print('labels_pred %s' % labels_pred[0:5])
                     ami = adjusted_mutual_info_score(labels_cv, labels_pred)
                     fmi = fowlkes_mallows_score(labels_cv, labels_pred)
 
