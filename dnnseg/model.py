@@ -1757,8 +1757,8 @@ class AcousticEncoderDecoder(object):
                                 )
 
                     h, c, v = homogeneity_completeness_v_measure(labels_cv, labels_pred)
-                    print('labels_cv %s' % labels_cv[0:5])
-                    print('labels_pred %s' % labels_pred[0:5])
+                    print('labels_cv shape: %s' % labels_cv.shape)
+                    print('labels_pred shape: %s' % labels_pred.shape)
                     ami = adjusted_mutual_info_score(labels_cv, labels_pred)
                     fmi = fowlkes_mallows_score(labels_cv, labels_pred)
 
