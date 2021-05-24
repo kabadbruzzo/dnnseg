@@ -63,7 +63,10 @@ if __name__ == '__main__':
 
     print('labels_pred at writing step %s' % labels_pred[0:5])
     outfile = p.outdir + '/' + 'final_predictions_%s' % args.partition + '.txt'
-    np.savetxt(outfile, labels_pred, delimiter=",")
+    np.savetxt(outfile, labels_pred, fmt='%0.10g', delimiter=",")
+
+    outfile = p.outdir + '/' + 'labels%s' % args.partition + '.txt'
+    np.savetxt(outfile, data.labels, fmt='%0.10g', delimiter=","))
 
     outfile = p.outdir + '/' + 'classification_scores_%s' % args.partition + '.txt'
 
