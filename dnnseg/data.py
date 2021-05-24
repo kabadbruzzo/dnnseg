@@ -833,9 +833,9 @@ class AcousticDataset(object):
         if segments is None:
             segments = self.segments(segment_type=segment_type)
 
-        labels = segments.label
+        labels = segments.label ##ordered list (Dataframe or Series) of input labels
 
-        ix2label = self.ix2label(segment_type=segment_type)
+        ix2label = self.ix2label(segment_type=segment_type) ##sorted list of unique labels
 
         label2ix = {}
         for ix in range(len(ix2label)):
