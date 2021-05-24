@@ -598,11 +598,14 @@ class AcousticEncoderDecoder(object):
         raise NotImplementedError
 
     def _augment_encoding(self, encoding, encoder=None):
+        print('in method _augment_enconding: encoding shape is %s' % encoding.shape)
         with self.sess.as_default():
             with self.sess.graph.as_default():
                 if self.task == 'utterance_classifier':
                     if self.binary_classifier:
                         self.labels = binary2integer(tf.round(encoding), session=self.sess)
+                        print('labels have shape %s' % self.labels.shape)
+                        print('labels are %s' % self.labels)
                         self.label_probs = bernoulli2categorical(encoding, session=self.sess)
                     else:
                         self.labels = tf.argmax(self.encoding, axis=-1)
@@ -1665,6 +1668,7 @@ class AcousticEncoderDecoder(object):
                     ## in build:
                     ## from _initialize_objective (overridden by daughter class method): self.labels_post = self.labels
                     ## from _augment_encondig: self.labels = binary2integer(tf.round(encoding), session=...)
+                    ## self.encoding = self._initialize_classifier(self.encoder)
 
                     if binary:
                         encoding = []
