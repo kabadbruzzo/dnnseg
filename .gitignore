@@ -5,3 +5,4 @@ errors/
 *.pyc
 *.xml
 *.iml
+tests.ipynb
