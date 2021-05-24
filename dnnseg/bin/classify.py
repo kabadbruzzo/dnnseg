@@ -40,9 +40,9 @@ if __name__ == '__main__':
     with open(data_map[args.partition] + '/' + data_name, 'rb') as f:
         data = pickle.load(f)
 
-    print(type(data.labels(one_hot=False, segment_type='wrd')))
-    print(data.labels(one_hot=False, segment_type='wrd').shape)
-    print(data.labels(one_hot=False, segment_type='wrd'))
+    # print(type(data.labels(one_hot=False, segment_type='wrd')))
+    # print(data.labels(one_hot=False, segment_type='wrd').shape)
+    # print(data.labels(one_hot=False, segment_type='wrd'))
 
     dnnseg_model = load_dnnseg(p.outdir)
 
@@ -70,7 +70,9 @@ if __name__ == '__main__':
     np.savetxt(outfile, labels_pred, fmt='%0.10g', delimiter=",")
 
     outfile = p.outdir + '/' + 'labels%s' % args.partition + '.txt'
-    np.savetxt(outfile, data.labels, fmt='%0.10g', delimiter=",")
+    labels_true = pd.DataFrame(data.labels(one_hot=False, segment_type='wrd'))
+    labels_true.to_csv(outfile)
+    #np.savetxt(outfile, data.labels, fmt='%0.10g', delimiter=",")
 
     outfile = p.outdir + '/' + 'classification_scores_%s' % args.partition + '.txt'
 
