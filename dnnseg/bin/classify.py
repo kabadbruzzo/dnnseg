@@ -61,6 +61,7 @@ if __name__ == '__main__':
     outfile = p.outdir + '/' + 'classifications_%s' % args.partition + '.csv'
     segments.to_csv(outfile, na_rep='nan', index=False)
 
+    print('labels_pred at writing step %s' % labels_pred[0:5])
     outfile = p.outdir + '/' + 'final_predictions_%s' % args.partition + '.txt'
     np.savetxt(outfile, labels_pred, delimiter=",")
 

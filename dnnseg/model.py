@@ -1613,7 +1613,7 @@ class AcousticEncoderDecoder(object):
             plot=True,
             verbose=True
     ):
-        #print("using method .evaluate_classifier from AcousticEncoderDecoder")
+        print("using method .evaluate_classifier from AcousticEncoderDecoder")
         summary = ''
         eval_dict = {}
         binary = self.binary_classifier
@@ -1757,8 +1757,9 @@ class AcousticEncoderDecoder(object):
                                 )
 
                     h, c, v = homogeneity_completeness_v_measure(labels_cv, labels_pred)
-                    print('labels_cv shape: %s' % labels_cv.shape)
-                    print('labels_pred shape: %s' % labels_pred.shape)
+                    #print('labels_cv shape: %s' % labels_cv.shape)
+                    print('labels_pred at evaluation step %s' % labels_pred[0:5])
+
                     ami = adjusted_mutual_info_score(labels_cv, labels_pred)
                     fmi = fowlkes_mallows_score(labels_cv, labels_pred)
 
@@ -1883,6 +1884,7 @@ class AcousticEncoderDecoder(object):
             if verbose:
                 sys.stderr.write('The system is in segmentation mode and does not perform utterance classification. Skipping classifier evaluation...\n')
             out_data = None
+        print('labels_pred at classification step %s' % labels_pred[0:5])
 
         return out_data, eval_dict, summary, labels_pred
 
