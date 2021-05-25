@@ -304,7 +304,13 @@ def plot_label_histogram(labels, title=None, bins='auto', label_map=None, dir='.
 
     plt.close(fig)
 
-def plot_label_heatmap(labels, preds, title=None, label_map=None, cmap='Blues', dir='./', prefix='', suffix='.png'):
+def plot_label_heatmap(labels, preds, title=None, label_map=None, cmap='Blues', dir='./', prefix='', suffix='.png', dump_data = True):
+    """
+    Given a data set comprising N data points, and two partitions of these:
+    A set of classes (labels) and a set of clusters (preds).
+    Compute be the contingency table (df) produced by the clustering algorithm representing the clustering solution,
+    such that df[row][column] is the number of data points that are members of a class (row) and elements of a cluster (column).
+    """
     if label_map is not None:
         label_map = dict(zip(label_map.source,label_map.target))
 
@@ -332,6 +338,10 @@ def plot_label_heatmap(labels, preds, title=None, label_map=None, cmap='Blues', 
     if title is not None:
         fig.suptitle(title)
     # fig.tight_layout()
+
+    if dump_data:
+        filename = dir + '/' + 'label_heatmap' + '.csv'
+        df.to_csv(filename)
 
     try:
         fig.savefig(dir + '/' + prefix + 'label_heatmap' + suffix)
