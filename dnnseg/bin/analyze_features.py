@@ -25,6 +25,7 @@ if __name__ == '__main__':
     argparser.add_argument('-f', '--n_folds', type=int, default=5, help='Number of folds in cross-validation (>= 2).')
     argparser.add_argument('-v', '--verbose', action='store_true', help='Report progress to standard error.')
     argparser.add_argument('-o', '--outdir', default='./', help='Output directory.')
+    argparser.add_argument('-t', '--type', type=str, default=None, help='Type of classification. If left out, all possible features will be classified. One of ["quartetts", "biphones", "features", "phonloc", "featloc"]')
     args = argparser.parse_args()
 
     is_embedding_dimension = re.compile('d([0-9]+)')
@@ -33,6 +34,42 @@ if __name__ == '__main__':
         os.makedirs(args.outdir)
 
     df = pd.read_csv(args.data)
+
+    ## reduce df only to relevant features to be evaluated
+    d = ['index','fileID','start','end','speaker','label','d1','d2','d3','d4','d5','d6','d7','d8']
+
+    if args.type == 'quartetts':
+        ##todo: cut df only to columns concerning to respective classification types
+        feats = ['1','2','3','4','5','6','7','8']
+
+    elif args.type == 'biphones':
+        ##only take into account columns that refer to biphones
+        feats = ['bU','bY','dE','gY','kI','m@','mE','n@','nE','rE','SI','SU','vU','zE','zU',
+                 '@l','@m','El','EN','Er','Es','Ex','Ir','Ix','Ul','Un','UN','Ur','Yl','Yr']
+
+    elif args.type == 'features':
+        ##only take into account columns that refer to features contained in the label
+        feats = ['art_Frik','art_Lat','art_Nas','art_Plo','art_Trill',
+                      'ort_Alv','ort_Bilab','ort_LabDent','ort_Pal','ort_PostAlv','ort_Uvul','ort_Vel','aschwa']
+
+    elif args.type == 'featloc':
+        ##only take into account columns that refer to features contained in the label by position
+        feats = ['onset_art_Frik','onset_art_Nas','onset_art_Plo','onset_art_Trill',
+                        'onset_ort_Alv','onset_ort_Bilab','onset_ort_LabDent','onset_ort_PostAlv','onset_ort_Uvul',
+                        'onset_ort_Vel','onset_stimmhaft','onset_stimmlos',
+                        'coda_art_Frik','coda_art_Lat','coda_art_Nas','coda_art_Trill',
+                        'coda_ort_Alv','coda_ort_Bilab','coda_ort_Pal','coda_ort_Uvul','coda_ort_Vel','coda_aschwa',
+                        'coda_stimmhaft','coda_stimmlos']
+
+    elif args.type == 'phonloc':
+        ##only take into account columns that refer to phonemes contained in the label by position
+        feats = ['onset_z','onset_v','onset_k','onset_S','onset_m','onset_d','onset_n','onset_r','onset_b','onset_g',
+                       'nuc_U','nuc_I','nuc_E','nuc_@','nuc_Y',
+                       'coda_Ng','coda_r','coda_x','coda_m','coda_l','coda_s','coda_n',
+                       'high_freq','low_freq','onset_stimmhaft','onset_stimmlos']
+
+    df = df[df.columns.intersection(d + feats)]
+
     latent_dim_names = [c for c in df.columns if is_embedding_dimension.match(c)]
 
     precision = {}
@@ -44,6 +81,10 @@ if __name__ == '__main__':
         gold_cols = ['syllabic', 'consonantal', 'sonorant', 'continuant', 'delayed_release', 'approximant', 'nasal', 'voice', 'spread_glottis', 'labial', 'round', 'labiodental', 'coronal', 'anterior', 'distributed', 'strident', 'lateral', 'dorsal', 'high', 'low', 'front', 'back', 'tense', 'stress', 'diphthong']
     elif args.gold_cols == ['xitsonga']:
         gold_cols = ['syllabic', 'consonantal', 'sonorant', 'continuant', 'delayed_release', 'approximant', 'trill', 'nasal', 'voice', 'spread_glottis', 'constricted_glottis', 'labial', 'round', 'labiodental', 'coronal', 'anterior', 'distributed', 'strident', 'lateral', 'dorsal', 'high', 'low', 'front', 'back', 'tense', 'implosive']
+    elif args.gold_cols == ['german']
+        gold_cols = feats
+    elif args.gold_cols == ['spanish']
+        print("Not yet implemented for Spanish")
     else:
         gold_cols = args.gold_cols
 
