@@ -1739,6 +1739,7 @@ class AcousticEncoderDecoder(object):
                                 labels_pred.astype('int'),
                                 label_map=self.label_map,
                                 dir=self.outdir
+                                dump_data = True ##por ahora lo dejo así pero si el modelo debe correr desde el inicio podria traer problemas
                             )
 
                             if binary:
