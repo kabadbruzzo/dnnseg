@@ -81,9 +81,9 @@ if __name__ == '__main__':
         gold_cols = ['syllabic', 'consonantal', 'sonorant', 'continuant', 'delayed_release', 'approximant', 'nasal', 'voice', 'spread_glottis', 'labial', 'round', 'labiodental', 'coronal', 'anterior', 'distributed', 'strident', 'lateral', 'dorsal', 'high', 'low', 'front', 'back', 'tense', 'stress', 'diphthong']
     elif args.gold_cols == ['xitsonga']:
         gold_cols = ['syllabic', 'consonantal', 'sonorant', 'continuant', 'delayed_release', 'approximant', 'trill', 'nasal', 'voice', 'spread_glottis', 'constricted_glottis', 'labial', 'round', 'labiodental', 'coronal', 'anterior', 'distributed', 'strident', 'lateral', 'dorsal', 'high', 'low', 'front', 'back', 'tense', 'implosive']
-    elif args.gold_cols == ['german']
+    elif args.gold_cols == ['german']:
         gold_cols = feats
-    elif args.gold_cols == ['spanish']
+    elif args.gold_cols == ['spanish']:
         print("Not yet implemented for Spanish")
     else:
         gold_cols = args.gold_cols
