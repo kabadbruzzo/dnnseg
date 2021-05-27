@@ -24,14 +24,23 @@ if __name__ == '__main__':
     argparser.add_argument('-n', '--n_estimators', type=int, default=100, help='Number of estimators (trees) in random forest.')
     argparser.add_argument('-f', '--n_folds', type=int, default=5, help='Number of folds in cross-validation (>= 2).')
     argparser.add_argument('-v', '--verbose', action='store_true', help='Report progress to standard error.')
-    argparser.add_argument('-o', '--outdir', default='./', help='Output directory.')
+    argparser.add_argument('-o', '--outdir', default=None, help='Output directory.')
     argparser.add_argument('-t', '--type', type=str, default=None, help='Type of classification. If left out, all possible features will be classified. One of ["quartetts", "biphones", "features", "phonloc", "featloc"]')
     args = argparser.parse_args()
 
     is_embedding_dimension = re.compile('d([0-9]+)')
 
-    if not os.path.exists(args.outdir):
+    if not args.outdir:
+        #os.path.exists(args.outdir):
+        directory = os.path.dirname(args.data)
+        if args.type:
+            path = directory + '/' + args.type + '/'
+        else:
+            path = directory + '/'
+        os.makedirs(path)
+    elif not os.path.exists(args.outdir):
         os.makedirs(args.outdir)
+
 
     df = pd.read_csv(args.data)
 
