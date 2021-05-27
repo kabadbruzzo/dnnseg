@@ -31,15 +31,15 @@ if __name__ == '__main__':
     is_embedding_dimension = re.compile('d([0-9]+)')
 
     if not args.outdir:
-        #os.path.exists(args.outdir):
         directory = os.path.dirname(args.data)
         if args.type:
             path = directory + '/' + args.type + '/'
         else:
-            path = directory + '/'
-        os.makedirs(path)
+            path = directory
     elif not os.path.exists(args.outdir):
-        os.makedirs(args.outdir)
+        path = args.outdir
+
+    os.makedirs(path)
 
 
     df = pd.read_csv(args.data)
@@ -160,10 +160,10 @@ if __name__ == '__main__':
 
             (graph,) = pydot.graph_from_dot_data(graph)
 
-            outfile = args.outdir + '/decision_tree_%s.png' % gold_col
+            outfile = path + '/decision_tree_%s.png' % gold_col
             graph.write_png(outfile)
 
-        outfile = args.outdir + '/decision_tree_scores.txt'
+        outfile = path + '/decision_tree_scores.txt'
         with open(outfile, 'w') as f:
             f.write('feature precision recall f1 accuracy\n')
             for c in sorted(list(f1.keys())):
@@ -232,10 +232,10 @@ if __name__ == '__main__':
 
             (graph,) = pydot.graph_from_dot_data(graph)
 
-            outfile = args.outdir + '/decision_tree_%s.png' % latent_dim
+            outfile = path + '/decision_tree_%s.png' % latent_dim
             graph.write_png(outfile)
 
-        outfile = args.outdir + '/decision_tree_scores.txt'
+        outfile = path + '/decision_tree_scores.txt'
         with open(outfile, 'w') as f:
             f.write('feature precision recall f1 accuracy\n')
             for c in sorted(list(f1.keys())):
