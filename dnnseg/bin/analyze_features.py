@@ -38,8 +38,9 @@ if __name__ == '__main__':
             path = directory
     elif not os.path.exists(args.outdir):
         path = args.outdir
-
-    os.makedirs(path)
+        
+    if not os.path.exists(path):
+        os.makedirs(path)
 
 
     df = pd.read_csv(args.data)
