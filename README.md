@@ -17,8 +17,22 @@ The models are defined in the following files at the repository root:
   - `german_classify_nospeaker.ini`
   - `german_classify_nobsn.ini`
   - `german_classify_nospeaker_nobsn.ini`
+  
+Once the model has been trained, you want to have it output the final classifications for your data, 
+i.e. the final 8-bit binary representations along with information about the features you hoped to encode in them.
+For this, run:
 
-# Metadata
+`python -m dnnseg.bin.classify <PATH-TO-INI-FILE> -g <PATH-TO-FEATURES-FILE>
+
+To evaluate the availability of the features ...
+
+
+
+# Setup
+
+You will need the following files to run the model.
+
+## Metadata
 
 Metadata: folder containing
 - `german_files.txt` : a list of all .wav files to be read. No header necessary.
@@ -26,6 +40,10 @@ Metadata: folder containing
 
 Word information: folder containing
 - `german.vad` : a list of .wav files, audio start point in ms, audio end point in ms, and label. No headers necessary.
+
+## Features
+
+
 
 # Tensorboard
 
