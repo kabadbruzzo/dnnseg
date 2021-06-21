@@ -38,7 +38,7 @@ if __name__ == '__main__':
             path = directory
     elif not os.path.exists(args.outdir):
         path = args.outdir
-        
+
     if not os.path.exists(path):
         os.makedirs(path)
 
